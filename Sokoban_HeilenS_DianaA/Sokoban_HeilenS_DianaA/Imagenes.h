@@ -14,5 +14,5 @@ public:
 	Imagenes();
 	Sprite* getFondo();
 	Sprite* getImagen(string nomImagen);
-	
+	void CargarImagenes();
 };

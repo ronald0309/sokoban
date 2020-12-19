@@ -11,9 +11,9 @@ private:
 	Sprite* sp;
 	string nombre;
 public:
-	Imagen(string texture, string nombre, int tam);
+	Imagen(string texture, string nombre, int tam, Texture* text);
 	Sprite* getSprite();
-	void cargarSprite(int i);
+	void cargarSprite(int i, Texture*);
 	string getNombre();
 	void setNombre(string nombre);
 };
