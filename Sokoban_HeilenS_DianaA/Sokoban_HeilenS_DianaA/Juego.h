@@ -9,18 +9,37 @@ using namespace std;
 class Juego
 {
 private:
-	RenderWindow* ventana1; 
+	RenderWindow* ventana1;
 	Event* evento;
 	Vector2i cordenadas;
-	Imagenes* imagen= new Imagenes();
+	Imagenes* imagen = new Imagenes();
 	Matriz* mat;
 	Casilla* casilla;
 	Sprite* sprite;
-	
+	Casilla* PosicionActual;
+	int p, k;
+	int nivel;
 public:
 	Juego(int dimencion_x, int dimencion_y, string titulo);
 	void Refrescar(int controlador_ventana, bool nuevo);
 	void Dibujar(int opcion, bool nuevo);
+	void PintarPartida();
+	//metodos para cargar los niveles;
+	void CargarNiveles();
+	void Nivel1(int i, int j);
+	void Nivel2(int i, int j);
+	void Nivel3(int i, int j);
+	void Nivel4(int i, int j);
+	// metodos para repintar los niveles
+	void RepintarNivel();
+	//Lectura de mouse
 	void CordenadasMouse();
-	void Partida();
+	void ProcesarMouse(int controlador_ventana);
+	void MouseNivel();
+	//Metodos de movimientos
+	bool MovimientoArriba(int i, int j);
+	bool MovimientoAbajo(int i, int j);
+	bool MovimientoIzquierda(int i, int j);
+	bool MovimientoDerecha(int i, int j);
+	
 };

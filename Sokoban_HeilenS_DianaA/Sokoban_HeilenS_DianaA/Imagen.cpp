@@ -18,7 +18,7 @@ void Imagen::cargarSprite(int i, Texture* text)
 	sp = new Sprite(*texture);
 	if (i == 1) {
 		sp->setScale(100.f / text->getSize().x, 100.f / text->getSize().y);
-		sp->setScale(0.1, 0.1);
+		sp->setScale(0.117, 0.117);
 	}
 
 }

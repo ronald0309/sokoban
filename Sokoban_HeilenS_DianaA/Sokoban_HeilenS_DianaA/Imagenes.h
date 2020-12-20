@@ -9,10 +9,13 @@ class Imagenes {
 private:
 	Sprite *fondo;
 	Texture* tFondo;
+	Texture* t;
+	Sprite* s;
 	Imagen* imagenes[7];
 public:
 	Imagenes();
 	Sprite* getFondo();
 	Sprite* getImagen(string nomImagen);
+	Sprite* getS();
 	void CargarImagenes();
 };

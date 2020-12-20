@@ -3,16 +3,16 @@
 Matriz::Matriz()
 {
 	inicio = NULL;
-	int x = 325, y = 150;
-	for (int i = 0; i < 8; i++) {
+	int x = 200, y = 0;
+	for (int i = 0; i < 10; i++) {
 		insertarFila(new Fila(i));
-		for (int j = 0; j < 8; j++) {
+		for (int j = 0; j < 10; j++) {
 			insertarColumna(new Columna(j), i);
 			insertarCasilla(new Casilla(x, y, "hola"), i, j);
-			y += 50;
+			y += 60;
 		}
-		x += 50;
-		y = 150;
+		x += 60;
+		y = 0;
 	}
 }
 
