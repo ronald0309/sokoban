@@ -20,6 +20,7 @@ void Imagen::cargarSprite(int i, Texture* text)
 		sp->setScale(100.f / text->getSize().x, 100.f / text->getSize().y);
 		sp->setScale(0.117, 0.117);
 	}
+	
 
 }
 string Imagen::getNombre()
