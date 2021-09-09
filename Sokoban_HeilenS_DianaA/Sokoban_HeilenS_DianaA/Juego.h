@@ -25,12 +25,11 @@ private:
 	int nivel;
 public:
 	Juego(int dimencion_x, int dimencion_y, string titulo);
-	void Refrescar(int controlador_ventana, bool nuevo);
-	void Dibujar(int opcion, bool nuevo);
+	void Refrescar(int controlador_ventana);
+	void Dibujar(int opcion);
 	void CargarMenu();
 	void CargarAcercaDe();
 	void CargarGanar();
-	
 	//metodos para cargar los niveles;
 	void CargarNiveles();
 	void Nivel1(int i, int j);

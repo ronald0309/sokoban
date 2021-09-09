@@ -18,6 +18,10 @@ private:
 	Texture* fGanar;
 	Sprite* fondoGanar;
 	Imagen* niveles[4];
+	Texture* reiniciar;
+	Sprite* botonReiniciar;
+	Texture* menu;
+	Sprite* botonMenu;
 
 	Imagen* imagenes[7];
 public:
@@ -29,6 +33,8 @@ public:
 	Sprite* getNivel(int n);
 	Sprite* getAcercaDe();
 	Sprite* getFondoGanar();
+	Sprite* getBotonReiniciar();
+	Sprite* getBotonMenu();
 
 	void CargarImagenes();
 };

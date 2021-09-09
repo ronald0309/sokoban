@@ -1,6 +1,4 @@
 #include "Juego.h"
-
-
 Juego::Juego(int dimencion_x, int dimencion_y, string titulo) {
 	ventana1 = new RenderWindow(VideoMode(dimencion_x, dimencion_y), titulo);
 	ventana1->setFramerateLimit(60);
@@ -9,29 +7,20 @@ Juego::Juego(int dimencion_x, int dimencion_y, string titulo) {
 	mat = new Matriz();
 	PosicionActual = NULL;
 	casilla = NULL;
-	
-	Refrescar(0, true);
-	while (ventana1->isOpen())
-	{
-		while (ventana1->pollEvent(*evento)) {
-			switch (evento->type) {
-			case Event::Closed:
-				ventana1->close();
-				exit(1);
-				break;
-			}
-		}
-	}
+	Refrescar(0);
 }
-void Juego::Refrescar(int controlador_ventana, bool nuevo = true)
+//Se encargara de llamar a la funcion de Dibujar para que pinte la pantalla que corresponde y luego al evento del mouse que controla la ventana
+void Juego::Refrescar(int controlador_ventana)
 {
-	Dibujar(controlador_ventana, nuevo);
+	Dibujar(controlador_ventana);
 	while (ventana1->isOpen())
 	{
 		ProcesarMouse(controlador_ventana);
 	}
 }
-void Juego::Dibujar(int opcion, bool nuevo)
+// Metodos de pintado en pantalla
+//Se encarga de llamar al metodo correspontiente a la pantalla que se encuentre 
+void Juego::Dibujar(int opcion)
 {
 	switch (opcion)
 	{
@@ -53,31 +42,35 @@ void Juego::Dibujar(int opcion, bool nuevo)
 		break;
 	}
 }
+//Va a pintar la imagen de menu 
 void Juego::CargarMenu()
 {
 	ventana1->clear();
 	ventana1->draw(*imagen->getFondoMenu());
 	ventana1->display();
 }
+//Va a pintar la imagen de acerca de 
 void Juego::CargarAcercaDe()
 {
 	ventana1->clear();
 	ventana1->draw(*imagen->getAcercaDe());
 	ventana1->display();
 }
+//Va a pintar la imagen de que el jugador gano 
 void Juego::CargarGanar()
 {
 	ventana1->clear();
 	ventana1->draw(*imagen->getFondoGanar());
 	ventana1->display();
 }
+//Encargado de obtener la cordenada del mouse 
 void Juego::CordenadasMouse()
 {
-	//ubicacion de lo que selecciono
 	cordenadas = Mouse::getPosition(*ventana1);
 	cordenadas = (Vector2i)ventana1->mapPixelToCoords(cordenadas);
 	cout << cordenadas.x << "," << cordenadas.y << endl;
 }
+// El encargado de llamar a los metodos que controlaran el evento mouse de cada pantalla 
 void Juego::ProcesarMouse(int controlador_ventana)
 {
 	switch (controlador_ventana)
@@ -98,6 +91,7 @@ void Juego::ProcesarMouse(int controlador_ventana)
 		break;
 	}
 }
+// Controlara el evento mouse de los niveles 
 void Juego::MouseNivel()
 {
 	while (ventana1->pollEvent(*evento)) {
@@ -113,8 +107,9 @@ void Juego::MouseNivel()
 				if ((cordenadas.x >= PosicionActual->getX()) && (cordenadas.x <= (PosicionActual->getX() + 60)) && (cordenadas.y >= PosicionActual->getY() + 60) && (cordenadas.y <= (PosicionActual->getX() + 120))) {
 					if (MovimientoAbajo(p, k)) {//abajo
 						cout << "Entro";
-						RepintarNivel();
 						NivelSuperado();
+						RepintarNivel();
+						
 					}
 				}else
 				if ((cordenadas.x >= PosicionActual->getX()) && (cordenadas.x <= (PosicionActual->getX() + 60)) && (cordenadas.y >= PosicionActual->getY() - 60) && (cordenadas.y <= (PosicionActual->getX()))) {
@@ -124,18 +119,23 @@ void Juego::MouseNivel()
 						RepintarNivel();
 
 					}
-				}
+				}else
 				if ((cordenadas.x >= PosicionActual->getX() + 60) && (cordenadas.x <= (PosicionActual->getX() + 120)) && (cordenadas.y >= PosicionActual->getY()) && (cordenadas.y <= (PosicionActual->getX() + 60))) {
 					if (MovimientoDerecha(p, k)) {
 						RepintarNivel();
 						NivelSuperado();
 					}
-				}
+				}else
 				if ((cordenadas.x >= PosicionActual->getX() - 60) && (cordenadas.x <= (PosicionActual->getX())) && (cordenadas.y >= PosicionActual->getY()) && (cordenadas.y <= (PosicionActual->getX() + 60))) {
 					if (MovimientoIzquierda(p, k)) {
 						RepintarNivel();
 						NivelSuperado();
 					}
+				}if ((cordenadas.x >= 65) && (cordenadas.x <= 129) && (cordenadas.y >= 350) && (cordenadas.y <= 414)) {
+					CargarNiveles();
+					RepintarNivel();
+				}if ((cordenadas.x >= 65) && (cordenadas.x <= 129) && (cordenadas.y >= 450) && (cordenadas.y <= 484)) {
+					Refrescar(0);
 				}
 
 			}
@@ -143,6 +143,7 @@ void Juego::MouseNivel()
 		}
 	}
 }
+// Controlara el evento mouse del menu
 void Juego::MouseMenu()
 {
 	while (ventana1->pollEvent(*evento)) {
@@ -170,6 +171,7 @@ void Juego::MouseMenu()
 		}
 	}
 }
+// Controlara el evento mouse del acerca de
 void Juego::MouseAcercaDe()
 {
 	while (ventana1->pollEvent(*evento)) {
@@ -189,6 +191,7 @@ void Juego::MouseAcercaDe()
 		}
 	}
 }
+// Controlara el evento mouse de la pantalla de ganar 
 void Juego::MouseGanar()
 {
 	while (ventana1->pollEvent(*evento)) {
@@ -208,50 +211,8 @@ void Juego::MouseGanar()
 		}
 	}
 }
-/*void Juego::PintarPartida()
-{
-	ventana1->clear();
-	ventana1->draw(*imagen->getFondo());
-	ventana1->draw(*imagen->getS());
-	for (int i = 1; i <= 8; i++) {
-		casilla = NULL;
-		for (int j = 1; j <= 8; j++) {
-			casilla = mat->DevolverCasilla(i - 1, j - 1);
-			if (casilla != NULL)
-				casilla->toString();
-			cout << endl;
-			sprite = new Sprite();
-			switch (nivel)
-			{
-			case 1:
-				Nivel1(i, j);
-				break;
-			case 2:
-				Nivel2(i, j);
-				break;
-			case 3:
-				Nivel3(i, j);
-				break;
-			case 4:
-				Nivel4(i, j);
-				break;
-			}
-			Nivel1(i, j);
-			sprite->setPosition(casilla->getX(), casilla->getY());
-			ventana1->draw(*sprite);
-		}
-	}
-	for (int i = 1; i <= 8; i++) {
-		casilla = NULL;
-		for (int j = 1; j <= 8; j++) {
-			casilla = mat->DevolverCasilla(i - 1, j - 1);
-			if (casilla != NULL)
-				casilla->toString();
-			cout << endl;
-		}
-	}
-	ventana1->display();
-}*/
+// eventos de control de niveles 
+//Llama a los eventos de cargar los niveles 
 void Juego::CargarNiveles() {
 
 	for (int i = 0; i < 10; i++) {
@@ -278,6 +239,7 @@ void Juego::CargarNiveles() {
 	}
 
 }
+//Carga el nivel correspondiente 
 void Juego::Nivel1(int i, int j) {
 	if (i == 0) {
 		sprite = imagen->getImagen("Vacío(afuera)");
@@ -1034,6 +996,7 @@ void Juego::Nivel4(int i, int j) {
 		}
 	}
 }
+//verefica si el nivel fue superado o no 
 void Juego::NivelSuperado()
 {
 	switch(nivel)
@@ -1084,6 +1047,12 @@ void Juego::RepintarNivel()
 	Sprite* p = imagen->getNivel(nivel);
 	p->setPosition(30, 70);
 	ventana1->draw(*p);
+	p = imagen->getBotonReiniciar();
+	p->setPosition(65, 350);
+	ventana1->draw(*p);
+	p = imagen->getBotonMenu();
+	p->setPosition(65, 450);
+	ventana1->draw(*p);
 	for (int i = 0; i < 10; i++) {
 		casilla = NULL;
 		for (int j = 0; j < 10; j++) {
@@ -1127,10 +1096,11 @@ void Juego::RepintarNivel()
 	//5 = CajaObjetivo.
 	//6 = PersonajeObjetivo.
 	//7 = Vacío(adentro).
+// Metodos de movimientos 
 bool Juego::MovimientoIzquierda(int i, int j) {
 	bool movimiento = false;
-	Casilla* auxCasilla = mat->DevolverCasilla(i - 2, j);// i,j
-	Casilla* auxCasilla1 = mat->DevolverCasilla(i - 1, j);
+	Casilla* auxCasilla = mat->DevolverCasilla(i - 2, j);// se usa para cuando se tiene que mover la caja 
+	Casilla* auxCasilla1 = mat->DevolverCasilla(i - 1, j);// se usa para verficar la posicion siguiente 
 	if (auxCasilla1->getImagen() == "Vacío(adentro)") { //El personaje se va a ir moviendo entre los espacios vacíos(adentro). //Es la posición siguiente, qué hay ahí.
 		movimiento = true;
 		auxCasilla1->setImagen("Personaje"); //El personaje se mueve.
@@ -1157,7 +1127,7 @@ bool Juego::MovimientoIzquierda(int i, int j) {
 			}
 			else {
 				if (auxCasilla->getImagen() == "Objetivo") { //Hace que la caja llegue a la meta(objetivo).
-					//Singlenton.getInstance().contadorPuntos++;
+					
 					st.push(1);
 					movimiento = true;
 					auxCasilla->setImagen("CajaObjetivo"); //El objetivo pasó a ser cajaObjetivo.
@@ -1187,7 +1157,6 @@ bool Juego::MovimientoIzquierda(int i, int j) {
 				}
 				else {
 					if (auxCasilla->getImagen() == "Vacío(adentro)") {
-						//Singlenton.getInstance().contadorPuntos--;
 						st.pop();
 						movimiento = true;
 						auxCasilla->setImagen("Caja");
@@ -1223,8 +1192,8 @@ bool Juego::MovimientoIzquierda(int i, int j) {
 }
 bool Juego::MovimientoDerecha(int i, int j) {
 	bool movimiento = false;
-	Casilla* auxCasilla = mat->DevolverCasilla(i + 2, j);// i,j
-	Casilla* auxCasilla1 = mat->DevolverCasilla(i + 1, j);//aux1,aux2
+	Casilla* auxCasilla = mat->DevolverCasilla(i + 2, j); 
+	Casilla* auxCasilla1 = mat->DevolverCasilla(i + 1, j);
 	if (auxCasilla1->getImagen() == "Vacío(adentro)") { //El personaje se va a ir moviendo entre los espacios vacíos(adentro).
 		movimiento = true;
 		auxCasilla1->setImagen("Personaje");
@@ -1242,7 +1211,6 @@ bool Juego::MovimientoDerecha(int i, int j) {
 				movimiento = true;
 				auxCasilla->setImagen("Caja"); //Cambia el valor dos posciciones hacia abajo de la posición del jugador.
 				auxCasilla1->setImagen("Personaje");
-				//matrizS[i + 1][j] = 2; //Mueve el jugador hacia abajo.
 				if (PosicionActual->getImagen() == "Personaje") {
 					PosicionActual->setImagen("Vacío(adentro)");
 				}
@@ -1252,12 +1220,11 @@ bool Juego::MovimientoDerecha(int i, int j) {
 			}
 			else {
 				if (auxCasilla->getImagen() == "Objetivo") { //Hace que la caja llegue a la meta(objetivo).
-					//Singlenton.getInstance().contadorPuntos++;
 					st.push(1);
 					movimiento = true;
 					auxCasilla->setImagen("CajaObjetivo"); //El objetivo pasó a ser cajaObjetivo.
 					auxCasilla1->setImagen("Personaje");
-					//matrizS[i + 1][j] = 2;
+				
 					if (PosicionActual->getImagen() == "Personaje") {
 						PosicionActual->setImagen("Vacío(adentro)");
 					}
@@ -1273,7 +1240,6 @@ bool Juego::MovimientoDerecha(int i, int j) {
 					movimiento = true;
 					auxCasilla->setImagen("CajaObjetivo"); //El objetivo pasó a ser cajaObjetivo.
 					auxCasilla1->setImagen("PersonajeObjetivo");
-					//matrizS[i + 1][j] = 6;
 					if (PosicionActual->getImagen() == "Personaje") {
 						PosicionActual->setImagen("Vacío(adentro)");
 					}
@@ -1283,12 +1249,10 @@ bool Juego::MovimientoDerecha(int i, int j) {
 				}
 				else {
 					if (auxCasilla->getImagen() == "Vacío(adentro)") {
-						//Singlenton.getInstance().contadorPuntos--;
 						st.pop();
 						movimiento = true;
 						auxCasilla->setImagen("Caja");
 						auxCasilla1->setImagen("PersonajeObjetivo");
-						//matrizS[i + 1][j] = 6;
 						if (PosicionActual->getImagen() == "Personaje") {
 							PosicionActual->setImagen("Vacío(adentro)");
 						}
@@ -1339,7 +1303,6 @@ bool Juego::MovimientoArriba(int i, int j) {
 				movimiento = true;
 				auxCasilla->setImagen("Caja");
 				auxCasilla1->setImagen("Personaje");
-				//matrizS[i][j - 1] = 2;
 				if (PosicionActual->getImagen() == "Personaje") {
 					PosicionActual->setImagen("Vacío(adentro)");
 				}
@@ -1349,12 +1312,10 @@ bool Juego::MovimientoArriba(int i, int j) {
 			}
 			else {
 				if (auxCasilla->getImagen() == "Objetivo") { //Hace que la caja llegue a la meta(objetivo).
-					//Singlenton.getInstance().contadorPuntos++;
 					st.push(1);
 					movimiento = true;
 					auxCasilla->setImagen("CajaObjetivo"); //El objetivo pasó a ser cajaObjetivo.
 					auxCasilla1->setImagen("Personaje");
-					//matrizS[i][j - 1] = 2;
 					if (PosicionActual->getImagen() == "Personaje") {
 						PosicionActual->setImagen("Vacío(adentro)");
 					}
@@ -1370,7 +1331,6 @@ bool Juego::MovimientoArriba(int i, int j) {
 					movimiento = true;
 					auxCasilla->setImagen("CajaObjetivo"); //El objetivo pasó a ser cajaObjetivo.
 					auxCasilla1->setImagen("PersonajeObjetivo");
-					//matrizS[i][j - 1] = 6;
 					if (PosicionActual->getImagen() == "Personaje") {
 						PosicionActual->setImagen("Vacío(adentro)");
 					}
@@ -1380,12 +1340,10 @@ bool Juego::MovimientoArriba(int i, int j) {
 				}
 				else {
 					if (auxCasilla->getImagen() == "Vacío(adentro)") {
-						//Singlenton.getInstance().contadorPuntos--;
 						st.pop();
 						movimiento = true;
 						auxCasilla->setImagen("Caja");
 						auxCasilla1->setImagen("PersonajeObjetivo");
-						//matrizS[i][j - 1] = 6;
 						if (PosicionActual->getImagen() == "Personaje") {
 							PosicionActual->setImagen("Vacío(adentro)");
 						}
@@ -1393,7 +1351,6 @@ bool Juego::MovimientoArriba(int i, int j) {
 							PosicionActual->setImagen("Objetivo");
 						}
 					}
-
 				}
 			}
 			if (auxCasilla1->getImagen() == "Objetivo") {
@@ -1435,7 +1392,6 @@ bool Juego::MovimientoAbajo(int i, int j) {
 				movimiento = true;
 				auxCasilla->setImagen("Caja");
 				auxCasilla1->setImagen("Personaje");
-				//matrizS[i][j + 1] = 2;
 				if (PosicionActual->getImagen() == "Personaje") {
 					PosicionActual->setImagen("Vacío(adentro)");
 				}
@@ -1450,7 +1406,6 @@ bool Juego::MovimientoAbajo(int i, int j) {
 					movimiento = true;
 					auxCasilla->setImagen("CajaObjetivo"); //El objetivo pasó a ser cajaObjetivo.
 					auxCasilla1->setImagen("Personaje");
-					//matrizS[i][j + 1] = 2;
 					if (PosicionActual->getImagen() == "Personaje") {
 						PosicionActual->setImagen("Vacío(adentro)");
 					}
@@ -1467,7 +1422,6 @@ bool Juego::MovimientoAbajo(int i, int j) {
 					movimiento = true;
 					auxCasilla->setImagen("CajaObjetivo"); //El objetivo pasó a ser cajaObjetivo.
 					auxCasilla1->setImagen("PersonajeObjetivo");
-					//matrizS[i][j + 1] = 6;
 					if (PosicionActual->getImagen() == "Personaje") {
 						PosicionActual->setImagen("Vacío(adentro)");
 					}
@@ -1477,12 +1431,10 @@ bool Juego::MovimientoAbajo(int i, int j) {
 				}
 				else {
 					if (auxCasilla->getImagen() == "Vacío(adentro)") { //Válida que la posición siguiente a la caja esté vacío;
-						//Singlenton.getInstance().contadorPuntos--; //Disminuye el contador de cajas en puntos porque se saca una caja del punto.
 						st.pop();
 						movimiento = true;
 						auxCasilla->setImagen("Caja"); //Mueve la caja a su nueva posición.
 						auxCasilla1->setImagen("PersonajeObjetivo");
-						//matrizS[i][j + 1] = 6; //Coloca al personaje con el punto donde estaba la caja.
 						if (PosicionActual->getImagen() == "Personaje") {
 							PosicionActual->setImagen("Vacío(adentro)");
 						}

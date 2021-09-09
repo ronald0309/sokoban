@@ -22,6 +22,14 @@ Imagenes::Imagenes()
 	s = new Sprite;
 	t->loadFromFile("ImgSokoban/Vacío(adentro).jpg");
 	s->setTexture(*t);
+	reiniciar = new Texture;
+	botonReiniciar = new Sprite;
+	reiniciar->loadFromFile("ImgSokoban/Homero/Reiniciar.png");
+	botonReiniciar->setTexture(*reiniciar);
+	menu = new Texture;
+	botonMenu = new Sprite;
+	menu->loadFromFile("ImgSokoban/Homero/MenúPrincipal.png");
+	botonMenu->setTexture(*menu);
 	s->setPosition(200, 0);
 	s->scale(1.171875, 1.171875);
 	CargarImagenes();
@@ -79,6 +87,16 @@ Sprite* Imagenes::getAcercaDe()
 Sprite* Imagenes::getFondoGanar()
 {
 	return fondoGanar;
+}
+
+Sprite* Imagenes::getBotonReiniciar()
+{
+	return botonReiniciar;
+}
+
+Sprite* Imagenes::getBotonMenu()
+{
+	return botonMenu;
 }
 
 void Imagenes::CargarImagenes() {

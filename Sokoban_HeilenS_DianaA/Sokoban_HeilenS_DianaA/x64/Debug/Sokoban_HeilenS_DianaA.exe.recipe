@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
-  <ProjectOutputs>C:\Users\Ronny\Documents\GitHub\sokoban\Sokoban_HeilenS_DianaA\x64\Debug\Sokoban_HeilenS_DianaA.exe</ProjectOutputs>
-  <ContentFiles></ContentFiles>
-  <SatelliteDlls></SatelliteDlls>
-  <NonRecipeFileRefs></NonRecipeFileRefs>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>C:\Users\Ronny\Documents\GitHub\sokoban\Sokoban_HeilenS_DianaA\x64\Debug\Sokoban_HeilenS_DianaA.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
 </Project>
